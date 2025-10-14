@@ -41,7 +41,7 @@ public class TeamController {
         try {
             return new ResponseEntity<>(Payload.create(teamService.addTeam(team)), HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(Payload.create(null, e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Payload.create(null, "Error: Team can not be created", HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -50,7 +50,7 @@ public class TeamController {
         try {
             return new ResponseEntity<>(Payload.create(null), HttpStatus.NO_CONTENT);
         } catch (Exception e) {
-            return new ResponseEntity<>(Payload.create(null, e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Payload.create(null, "Error: Team can not be deleted", HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
     }
 }
