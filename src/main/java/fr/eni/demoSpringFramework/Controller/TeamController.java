@@ -48,7 +48,7 @@ public class TeamController {
     @DeleteMapping("/{name}")
     public ResponseEntity<Payload<Boolean>> deleteOneTeam(@PathVariable String name) {
         try {
-            return new ResponseEntity<>(Payload.create(null), HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(Payload.create(teamService.removeTeam(name)), HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(Payload.create(null, "Error: Team can not be deleted", HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
