@@ -20,6 +20,16 @@ public class TeamService implements ITeamService {
         return teams;
     }
 
+    public Team getTeamByName(String name) {
+        for (Team team : teams) {
+            if (team.getName().equals(name)) {
+                return team;
+            }
+        }
+
+        return null;
+    }
+
     public Team addTeam(Team team) {
         if (getTeamByName(team.getName()) != null) {
             throw new RuntimeException("Team already exists");
@@ -39,15 +49,5 @@ public class TeamService implements ITeamService {
 
     public boolean removeTeam(Integer id) {
         return teams.removeIf(team -> team.getId() == id);
-    }
-
-    public Team getTeamByName(String name) {
-        for (Team team : teams) {
-            if (team.getName().equals(name)) {
-                return team;
-            }
-        }
-
-        return null;
     }
 }
