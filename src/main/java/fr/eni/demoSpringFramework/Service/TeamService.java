@@ -21,6 +21,10 @@ public class TeamService implements ITeamService {
     }
 
     public Team getTeamByName(String name) {
+        if (name.isEmpty()) {
+            return null;
+        }
+
         for (Team team : teams) {
             if (team.getName().equals(name)) {
                 return team;
@@ -44,6 +48,10 @@ public class TeamService implements ITeamService {
     }
 
     public boolean removeTeam(String name) {
+        if (name.isEmpty()) {
+            return false;
+        }
+
         return teams.removeIf(team -> team.getName().equals(name));
     }
 

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,7 +23,11 @@ public class TeamController {
     @GetMapping(path = {"", "/"})
     @ResponseBody
     public Payload<List<Team>> getAll() {
-        return Payload.create(teamService.getTeams());
+        try {
+            return Payload.create(teamService.getTeams());
+        } catch (Exception e) {
+            return Payload.create(new ArrayList<>());
+        }
     }
 
     @GetMapping("/{name}")
@@ -41,7 +46,11 @@ public class TeamController {
         try {
             return new ResponseEntity<>(Payload.create(teamService.addTeam(team)), HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(Payload.create(null, "Error: Team can not be created", HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Payload.create(
+                    null,
+                    "Error: Team can not be created",
+                    HttpStatus.BAD_REQUEST
+            ), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -50,7 +59,11 @@ public class TeamController {
         try {
             return new ResponseEntity<>(Payload.create(teamService.removeTeam(name)), HttpStatus.NO_CONTENT);
         } catch (Exception e) {
-            return new ResponseEntity<>(Payload.create(null, "Error: Team can not be deleted", HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Payload.create(
+                    null,
+                    "Error: Team can not be deleted",
+                    HttpStatus.BAD_REQUEST
+            ), HttpStatus.BAD_REQUEST);
         }
     }
 }
