@@ -65,6 +65,10 @@ public class Player {
 
     @JsonProperty("team")
     public String getTeamName() {
+        if (null == team) {
+            return null;
+        }
+
         return team.getName();
     }
 
