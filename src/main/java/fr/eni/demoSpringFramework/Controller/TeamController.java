@@ -34,4 +34,13 @@ public class TeamController {
 
         return new ResponseEntity<>(Payload.create(team), HttpStatus.OK);
     }
+
+    @PostMapping
+    public ResponseEntity<Payload<Team>> addTeam(@RequestBody Team team) {
+        try {
+            return new ResponseEntity<>(Payload.create(teamService.addTeam(team)), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Payload.create(null, e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

@@ -9,6 +9,8 @@ public interface ITeamService {
 
     Team getTeamByName(String name);
 
+    Team addTeam(Team team);
+
     boolean removeTeam(String name);
 
     boolean removeTeam(Integer id);
