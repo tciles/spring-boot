@@ -36,18 +36,14 @@ public class PlayerController {
         }
 
         Team team = teamService.getTeamByName(name.get());
+        Payload<Set<Player>> payload;
 
         if (null == team) {
-            return new ResponseEntity<>(Payload.create(
-                    null,
-                    "Team " + name.get() + " Not Found",
-                    HttpStatus.NOT_FOUND
-            ), HttpStatus.NOT_FOUND);
+            payload = Payload.create(null, "Team " + name.get() + " Not Found",  HttpStatus.NOT_FOUND);
+        } else {
+            payload = Payload.create(team.getPlayers(), "Players for the team " + team.getName(), HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(Payload.create(
-                team.getPlayers(),
-                "Players for the team " + team.getName()
-        ), HttpStatus.OK);
+        return new ResponseEntity<>(payload, payload.getHttpStatus());
     }
 }
