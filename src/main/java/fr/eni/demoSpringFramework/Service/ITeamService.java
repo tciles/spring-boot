@@ -1,7 +1,8 @@
 package fr.eni.demoSpringFramework.Service;
 
-import fr.eni.demoSpringFramework.Dto.Player;
-import fr.eni.demoSpringFramework.Dto.Team;
+import fr.eni.demoSpringFramework.Do.Player;
+import fr.eni.demoSpringFramework.Do.Team;
+import fr.eni.demoSpringFramework.Dto.TeamDTO;
 
 import java.util.Set;
 
@@ -10,7 +11,7 @@ public interface ITeamService {
 
     Team getTeamByName(String name);
 
-    Team addTeam(Team team);
+    Team addTeam(TeamDTO teamDto);
 
     boolean removeTeam(String name);
 

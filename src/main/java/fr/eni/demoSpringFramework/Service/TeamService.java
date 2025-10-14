@@ -1,7 +1,9 @@
 package fr.eni.demoSpringFramework.Service;
 
-import fr.eni.demoSpringFramework.Dto.Player;
-import fr.eni.demoSpringFramework.Dto.Team;
+import fr.eni.demoSpringFramework.Do.Player;
+import fr.eni.demoSpringFramework.Do.Team;
+import fr.eni.demoSpringFramework.Dto.TeamDTO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -13,8 +15,8 @@ public class TeamService implements ITeamService {
     private final Set<Team> teams = new HashSet<>();
 
     public TeamService() {
-        addTeam(new Team("U15F1"));
-        addTeam(new Team("U15M1"));
+        addTeam(new TeamDTO("U15F1"));
+        addTeam(new TeamDTO("U15M1"));
     }
 
     public TeamService(Set<Team> teams) {
@@ -39,10 +41,13 @@ public class TeamService implements ITeamService {
         return null;
     }
 
-    public Team addTeam(Team team) {
-        if (getTeamByName(team.getName()) != null) {
+    public Team addTeam(TeamDTO teamDto) {
+        if (getTeamByName(teamDto.name()) != null) {
             throw new RuntimeException("Team already exists");
         }
+
+        Team team = new Team();
+        BeanUtils.copyProperties(teamDto, team);
 
         id++;
         team.setId(id);

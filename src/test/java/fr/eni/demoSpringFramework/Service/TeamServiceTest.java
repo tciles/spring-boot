@@ -1,6 +1,6 @@
 package fr.eni.demoSpringFramework.Service;
 
-import fr.eni.demoSpringFramework.Dto.Team;
+import fr.eni.demoSpringFramework.Do.Team;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,6 +1,7 @@
 package fr.eni.demoSpringFramework.Controller;
 
-import fr.eni.demoSpringFramework.Dto.Team;
+import fr.eni.demoSpringFramework.Do.Team;
+import fr.eni.demoSpringFramework.Dto.TeamDTO;
 import fr.eni.demoSpringFramework.Response.Payload;
 import fr.eni.demoSpringFramework.Service.IPlayerService;
 import fr.eni.demoSpringFramework.Service.ITeamService;
@@ -46,9 +47,9 @@ public class TeamController {
     }
 
     @PostMapping
-    public ResponseEntity<Payload<Team>> addOneTeam(@RequestBody Team team) {
+    public ResponseEntity<Payload<Team>> addOneTeam(@RequestBody TeamDTO teamDto) {
         try {
-            return new ResponseEntity<>(Payload.create(teamService.addTeam(team)), HttpStatus.CREATED);
+            return new ResponseEntity<>(Payload.create(teamService.addTeam(teamDto)), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(Payload.create(
                     null,

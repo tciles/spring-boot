@@ -1,6 +1,6 @@
 package fr.eni.demoSpringFramework.Service;
 
-import fr.eni.demoSpringFramework.Dto.Player;
+import fr.eni.demoSpringFramework.Do.Player;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;

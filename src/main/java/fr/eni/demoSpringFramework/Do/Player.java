@@ -1,4 +1,4 @@
-package fr.eni.demoSpringFramework.Dto;
+package fr.eni.demoSpringFramework.Do;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

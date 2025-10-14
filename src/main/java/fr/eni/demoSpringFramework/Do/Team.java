@@ -1,4 +1,4 @@
-package fr.eni.demoSpringFramework.Dto;
+package fr.eni.demoSpringFramework.Do;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -12,6 +12,9 @@ public class Team {
 
     {
         players = new HashSet<>();
+    }
+
+    public Team() {
     }
 
     public Team(String name) {

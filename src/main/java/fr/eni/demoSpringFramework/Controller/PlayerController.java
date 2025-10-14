@@ -1,7 +1,7 @@
 package fr.eni.demoSpringFramework.Controller;
 
-import fr.eni.demoSpringFramework.Dto.Player;
-import fr.eni.demoSpringFramework.Dto.Team;
+import fr.eni.demoSpringFramework.Do.Player;
+import fr.eni.demoSpringFramework.Do.Team;
 import fr.eni.demoSpringFramework.Response.Payload;
 import fr.eni.demoSpringFramework.Service.IPlayerService;
 import fr.eni.demoSpringFramework.Service.ITeamService;
