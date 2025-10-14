@@ -26,7 +26,7 @@ public class TeamController {
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<Payload<Team>> getOneById(@PathVariable String name) {
+    public ResponseEntity<Payload<Team>> getOneByName(@PathVariable String name) {
         Team team = teamService.getTeamByName(name);
 
         if (null == team) {
