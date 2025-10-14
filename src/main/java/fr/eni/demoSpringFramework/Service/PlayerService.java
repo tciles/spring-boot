@@ -3,14 +3,14 @@ package fr.eni.demoSpringFramework.Service;
 import fr.eni.demoSpringFramework.Dto.Player;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class PlayerService implements IPlayerService {
 
     private static int id = 0;
-    private final List<Player> players = new ArrayList<>();
+    private final Set<Player> players = new HashSet<>();
 
     {
         addPlayer(new Player("Thomas", "CILES", "thomas.ciles2025@campus-eni.fr"));
@@ -18,7 +18,7 @@ public class PlayerService implements IPlayerService {
         addPlayer(new Player("Jane", "Doe", "jane.doe@campus-eni.fr"));
     }
 
-    public List<Player> getPlayers() {
+    public Set<Player> getPlayers() {
         return players;
     }
 
@@ -43,4 +43,18 @@ public class PlayerService implements IPlayerService {
 
         return null;
     }
+
+    @Override
+    public Set<Player> getPlayersByEmail(Set<String> emails) {
+        Set<Player> players = new HashSet<>();
+        
+        for (Player player : this.players) {
+            if (emails.contains(player.getEmail())) {
+                players.add(player);
+            }
+        }
+
+        return players;
+    }
+
 }

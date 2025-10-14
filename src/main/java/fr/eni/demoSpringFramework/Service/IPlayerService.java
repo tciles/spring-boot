@@ -2,8 +2,10 @@ package fr.eni.demoSpringFramework.Service;
 
 import fr.eni.demoSpringFramework.Dto.Player;
 
-import java.util.List;
+import java.util.Set;
 
 public interface IPlayerService {
-    List<Player> getPlayers();
+    Set<Player> getPlayers();
+
+    Set<Player> getPlayersByEmail(Set<String> emails);
 }

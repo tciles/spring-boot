@@ -3,13 +3,14 @@ package fr.eni.demoSpringFramework.Controller;
 import fr.eni.demoSpringFramework.Dto.Player;
 import fr.eni.demoSpringFramework.Dto.Team;
 import fr.eni.demoSpringFramework.Response.Payload;
+import fr.eni.demoSpringFramework.Service.IPlayerService;
 import fr.eni.demoSpringFramework.Service.ITeamService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/teams")
@@ -17,17 +18,20 @@ public class TeamController {
 
     private final ITeamService teamService;
 
-    public TeamController(ITeamService teamService) {
+    private final IPlayerService playerService;
+
+    public TeamController(ITeamService teamService, IPlayerService playerService) {
         this.teamService = teamService;
+        this.playerService = playerService;
     }
 
     @GetMapping(path = {"", "/"})
     @ResponseBody
-    public Payload<List<Team>> getAll() {
+    public Payload<Set<Team>> getAll() {
         try {
             return Payload.create(teamService.getTeams());
         } catch (Exception e) {
-            return Payload.create(new ArrayList<>());
+            return Payload.create(new HashSet<>());
         }
     }
 
@@ -66,5 +70,21 @@ public class TeamController {
                     HttpStatus.BAD_REQUEST
             ), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PatchMapping("/{name}/add-player")
+    @ResponseBody
+    public ResponseEntity<Payload<Team>> addTeamPlayer(@PathVariable String name, @RequestBody Set<String> emails) {
+        Team team = teamService.getTeamByName(name);
+
+        if (null == team) {
+            return new ResponseEntity<>(Payload.create(null, "Team Not Found"), HttpStatus.NOT_FOUND);
+        }
+
+        Set<Player> players = playerService.getPlayersByEmail(emails);
+
+        teamService.addPlayers(team, players);
+
+        return new ResponseEntity<>(Payload.create(team), HttpStatus.OK);
     }
 }

@@ -1,22 +1,27 @@
 package fr.eni.demoSpringFramework.Service;
 
+import fr.eni.demoSpringFramework.Dto.Player;
 import fr.eni.demoSpringFramework.Dto.Team;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class TeamService implements ITeamService {
     private static int id = 0;
-    private final List<Team> teams = new ArrayList<>();
+    private final Set<Team> teams = new HashSet<>();
 
-    {
-        addTeam(new Team("U15F1"));
-        addTeam(new Team("U15M1"));
+    public TeamService() {
+        teams.add(new Team("U15F1"));
+        teams.add(new Team("U15M1"));
     }
 
-    public List<Team> getTeams() {
+    public TeamService(Set<Team> teams) {
+        this.teams.addAll(teams);
+    }
+
+    public Set<Team> getTeams() {
         return teams;
     }
 
@@ -56,5 +61,9 @@ public class TeamService implements ITeamService {
 
     public boolean removeTeam(Integer id) {
         return teams.removeIf(team -> team.getId() == id);
+    }
+
+    public void addPlayers(Team team, Set<Player> players) {
+        team.setPlayers(players);
     }
 }

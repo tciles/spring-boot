@@ -1,11 +1,12 @@
 package fr.eni.demoSpringFramework.Service;
 
+import fr.eni.demoSpringFramework.Dto.Player;
 import fr.eni.demoSpringFramework.Dto.Team;
 
-import java.util.List;
+import java.util.Set;
 
 public interface ITeamService {
-    List<Team> getTeams();
+    Set<Team> getTeams();
 
     Team getTeamByName(String name);
 
@@ -14,4 +15,6 @@ public interface ITeamService {
     boolean removeTeam(String name);
 
     boolean removeTeam(Integer id);
+
+    void addPlayers(Team team, Set<Player> players);
 }

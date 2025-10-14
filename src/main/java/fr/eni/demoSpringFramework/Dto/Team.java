@@ -1,16 +1,17 @@
 package fr.eni.demoSpringFramework.Dto;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class Team {
 
     private int id;
     private String name;
-    private ArrayList<Player> players;
+    private Set<Player> players;
 
     {
-        players = new ArrayList<>();
+        players = new HashSet<>();
     }
 
     public Team(String name) {
@@ -33,15 +34,20 @@ public class Team {
         this.name = name;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public Set<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(ArrayList<Player> players) {
+    public void setPlayers(Set<Player> players) {
+        for (Player player : players) {
+            player.setTeam(this);
+        }
+
         this.players = players;
     }
 
     public void addPlayer(Player player) {
+        player.setTeam(this);
         players.add(player);
     }
 

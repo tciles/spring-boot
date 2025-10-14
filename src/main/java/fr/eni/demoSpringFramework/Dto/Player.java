@@ -1,5 +1,8 @@
 package fr.eni.demoSpringFramework.Dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Player {
@@ -51,6 +54,7 @@ public class Player {
         this.email = email;
     }
 
+    @JsonIgnore
     public Team getTeam() {
         return team;
     }
@@ -59,9 +63,13 @@ public class Player {
         this.team = team;
     }
 
+    @JsonProperty("team")
+    public String getTeamName() {
+        return team.getName();
+    }
+
     @Override
     public boolean equals(Object obj) {
-
         if (!(obj instanceof Player player)) return false;
 
         return Objects.equals(email, player.email);

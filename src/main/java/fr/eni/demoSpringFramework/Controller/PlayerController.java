@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/players")
@@ -28,7 +28,7 @@ public class PlayerController {
     }
 
     @GetMapping(path = {"", "/"}, name = "app_players_by_team")
-    public ResponseEntity<Payload<List<Player>>> getPlayersByTeam(
+    public ResponseEntity<Payload<Set<Player>>> getPlayersByTeam(
             @RequestParam("team") Optional<String> name
     ) {
         if (name.isEmpty()) {
