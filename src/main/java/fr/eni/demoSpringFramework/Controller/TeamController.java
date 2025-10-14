@@ -1,6 +1,5 @@
 package fr.eni.demoSpringFramework.Controller;
 
-import fr.eni.demoSpringFramework.Dto.Player;
 import fr.eni.demoSpringFramework.Dto.Team;
 import fr.eni.demoSpringFramework.Response.Payload;
 import fr.eni.demoSpringFramework.Service.IPlayerService;
@@ -72,8 +71,7 @@ public class TeamController {
         }
     }
 
-    @PatchMapping("/{name}/add-player")
-    @ResponseBody
+    @PatchMapping("/{name}/add-players")
     public ResponseEntity<Payload<Team>> addTeamPlayer(@PathVariable String name, @RequestBody Set<String> emails) {
         Team team = teamService.getTeamByName(name);
 
@@ -81,10 +79,22 @@ public class TeamController {
             return new ResponseEntity<>(Payload.create(null, "Team Not Found"), HttpStatus.NOT_FOUND);
         }
 
-        Set<Player> players = playerService.getPlayersByEmail(emails);
-
-        teamService.addPlayers(team, players);
+        teamService.addPlayers(team, playerService.getPlayersByEmail(emails));
 
         return new ResponseEntity<>(Payload.create(team), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{name}/players/{id}")
+    public ResponseEntity<Payload<Boolean>> deleteTeamPlayer(
+            @PathVariable("name") String name,
+            @PathVariable("id") int id
+    ) {
+        Team team = teamService.getTeamByName(name);
+
+        if (null == team) {
+            return new ResponseEntity<>(Payload.create(null, "Team Not Found"), HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(Payload.create(teamService.removePlayer(team, id)), HttpStatus.NO_CONTENT);
     }
 }

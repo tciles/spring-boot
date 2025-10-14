@@ -12,7 +12,7 @@ public class PlayerService implements IPlayerService {
     private static int id = 0;
     private final Set<Player> players = new HashSet<>();
 
-    {
+    PlayerService() {
         addPlayer(new Player("Thomas", "CILES", "thomas.ciles2025@campus-eni.fr"));
         addPlayer(new Player("John", "Doe", "john.doe@campus-eni.fr"));
         addPlayer(new Player("Jane", "Doe", "jane.doe@campus-eni.fr"));
@@ -47,7 +47,7 @@ public class PlayerService implements IPlayerService {
     @Override
     public Set<Player> getPlayersByEmail(Set<String> emails) {
         Set<Player> players = new HashSet<>();
-        
+
         for (Player player : this.players) {
             if (emails.contains(player.getEmail())) {
                 players.add(player);

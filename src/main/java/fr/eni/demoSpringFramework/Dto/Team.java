@@ -67,4 +67,8 @@ public class Team {
     public int hashCode() {
         return Objects.hashCode(name);
     }
+
+    public boolean hasPlayer(Player player) {
+        return players.contains(player);
+    }
 }

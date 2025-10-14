@@ -17,4 +17,6 @@ public interface ITeamService {
     boolean removeTeam(Integer id);
 
     void addPlayers(Team team, Set<Player> players);
+
+    boolean removePlayer(Team team, int id);
 }
