@@ -40,10 +40,10 @@ public class TeamController {
         Team team = teamService.getTeamByName(name);
 
         if (null == team) {
-            return new ResponseEntity<>(Payload.create(null, "Team Not Found"), HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Payload.create(null, "Team Not Found"));
         }
 
-        return new ResponseEntity<>(Payload.create(team), HttpStatus.OK);
+        return ResponseEntity.ok(Payload.create(team));
     }
 
     @PostMapping
