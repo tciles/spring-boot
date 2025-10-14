@@ -1,6 +1,7 @@
 package fr.eni.demoSpringFramework.Dto;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Team {
 
@@ -46,5 +47,18 @@ public class Team {
 
     public void removePlayer(Player player) {
         players.remove(player);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (!(obj instanceof Team team)) return false;
+
+        return Objects.equals(name, team.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name);
     }
 }

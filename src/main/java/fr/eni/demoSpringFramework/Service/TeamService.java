@@ -41,7 +41,6 @@ public class TeamService implements ITeamService {
 
         id++;
         team.setId(id);
-
         teams.add(team);
 
         return team;
