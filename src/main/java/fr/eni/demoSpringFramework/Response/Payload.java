@@ -6,7 +6,7 @@ public class Payload<T> {
 
     private final T data;
 
-    private String status = "OK";
+    private String message = "";
 
     private HttpStatus httpStatus = HttpStatus.OK;
 
@@ -14,14 +14,14 @@ public class Payload<T> {
         this.data = data;
     }
 
-    public Payload(T data, String status) {
+    public Payload(T data, String message) {
         this.data = data;
-        this.status = status;
+        this.message = message;
     }
 
-    public Payload(T data, String status, HttpStatus httpStatus) {
+    public Payload(T data, String message, HttpStatus httpStatus) {
         this.data = data;
-        this.status = status;
+        this.message = message;
         this.httpStatus = httpStatus;
     }
 
@@ -29,20 +29,16 @@ public class Payload<T> {
         return data;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public static <T> Payload<T> create(T data) {
-        return new Payload<>(data);
+    public String getMessage() {
+        return message;
     }
 
     public HttpStatus getHttpStatus() {
         return httpStatus;
     }
 
-    public void setHttpStatus(HttpStatus httpStatus) {
-        this.httpStatus = httpStatus;
+    public static <T> Payload<T> create(T data) {
+        return new Payload<>(data);
     }
 
     public static <T> Payload<T> create(T data, String status) {

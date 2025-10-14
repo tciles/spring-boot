@@ -20,12 +20,13 @@ public class TeamController {
     }
 
     @GetMapping(path = {"", "/"})
-    public Payload<List<Team>> getTeams() {
+    @ResponseBody
+    public Payload<List<Team>> getAll() {
         return Payload.create(teamService.getTeams());
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<Payload<Team>> getTeamById(@PathVariable String name) {
+    public ResponseEntity<Payload<Team>> getOneById(@PathVariable String name) {
         Team team = teamService.getTeamByName(name);
 
         if (null == team) {
@@ -36,9 +37,18 @@ public class TeamController {
     }
 
     @PostMapping
-    public ResponseEntity<Payload<Team>> addTeam(@RequestBody Team team) {
+    public ResponseEntity<Payload<Team>> addOneTeam(@RequestBody Team team) {
         try {
             return new ResponseEntity<>(Payload.create(teamService.addTeam(team)), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Payload.create(null, e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/{name}")
+    public ResponseEntity<Payload<Boolean>> deleteOneTeam(@PathVariable String name) {
+        try {
+            return new ResponseEntity<>(Payload.create(teamService.removeTeam(name)), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(Payload.create(null, e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
