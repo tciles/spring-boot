@@ -1,6 +1,7 @@
 package fr.eni.demoSpringFramework.Service;
 
 import fr.eni.demoSpringFramework.Do.Player;
+import fr.eni.demoSpringFramework.Do.Team;
 import fr.eni.demoSpringFramework.Dto.PlayerDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -77,6 +78,25 @@ public class PlayerService implements IPlayerService {
 
         for (Player player : this.players) {
             if (emails.contains(player.getEmail())) {
+                players.add(player);
+            }
+        }
+
+        return players;
+    }
+
+    @Override
+    public Set<Player> getPlayersByTeamName(String teamName) {
+        Set<Player> players = new HashSet<>();
+
+        for (Player player : this.players) {
+            Team team = player.getTeam();
+
+            if (team == null) {
+                continue;
+            }
+
+            if (player.getTeam().getName().equals(teamName)) {
                 players.add(player);
             }
         }

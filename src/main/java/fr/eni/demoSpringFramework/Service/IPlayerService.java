@@ -32,6 +32,14 @@ public interface IPlayerService {
     Set<Player> getPlayersByEmail(Set<String> emails);
 
     /**
+     * Get Players by his Team.name
+     * @param teamName Team.name
+     *
+     * @return Set of Players
+     */
+    Set<Player> getPlayersByTeamName(String teamName);
+
+    /**
      * Get a Player by his firstName and lastName
      *
      * @param firstName Player firstname

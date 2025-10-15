@@ -4,7 +4,6 @@ import fr.eni.demoSpringFramework.Do.Player;
 import fr.eni.demoSpringFramework.Dto.PlayerDTO;
 import fr.eni.demoSpringFramework.Response.Payload;
 import fr.eni.demoSpringFramework.Service.IPlayerService;
-import fr.eni.demoSpringFramework.Service.ITeamService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +19,9 @@ import java.util.stream.Collectors;
 public class PlayerController {
 
     private final IPlayerService playerService;
-    private final ITeamService teamService;
 
-    public PlayerController(IPlayerService playerService, ITeamService teamService) {
+    public PlayerController(IPlayerService playerService) {
         this.playerService = playerService;
-        this.teamService = teamService;
     }
 
     /**
@@ -42,11 +39,17 @@ public class PlayerController {
             return new ResponseEntity<>(Payload.create(playerService.getPlayers()), HttpStatus.OK);
         }
 
+        Payload<Set<Player>> payload1 = new Payload<>(playerService.getPlayersByTeamName(name.get()));
+
+        return ResponseEntity.status(payload1.getHttpStatus()).body(payload1);
+
+        /*
         Payload<Set<Player>> payload = teamService.getTeam(name.get())
                 .map(value -> Payload.create(value.getPlayers(), "Players for the team " + value.getName(), HttpStatus.OK))
                 .orElseGet(() -> Payload.create(null, "Team " + name.get() + " Not Found", HttpStatus.NOT_FOUND));
 
         return ResponseEntity.status(payload.getHttpStatus()).body(payload);
+        */
     }
 
     /**
