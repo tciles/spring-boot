@@ -64,12 +64,12 @@ public class Player {
     }
 
     @JsonProperty("team")
-    public String getTeamName() {
+    public Integer getTeamId() {
         if (null == team) {
             return null;
         }
 
-        return team.getName();
+        return team.getId();
     }
 
     @Override

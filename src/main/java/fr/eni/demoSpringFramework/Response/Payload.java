@@ -1,5 +1,7 @@
 package fr.eni.demoSpringFramework.Response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.http.HttpStatus;
 
 public class Payload<T> {
@@ -33,8 +35,14 @@ public class Payload<T> {
         return message;
     }
 
+    @JsonIgnore
     public HttpStatus getHttpStatus() {
         return httpStatus;
+    }
+
+    @JsonProperty("status")
+    public int getHttpStatusCode() {
+        return httpStatus.value();
     }
 
     public static <T> Payload<T> create(T data) {

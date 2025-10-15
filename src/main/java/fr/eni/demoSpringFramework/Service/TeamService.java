@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -20,29 +21,57 @@ public class TeamService implements ITeamService {
     }
 
     public TeamService(Set<Team> teams) {
-        this.teams.addAll(teams);
+        for (Team team : teams) {
+            addTeam(new TeamDTO(team.getName()));
+        }
+    }
+
+    public static void resetId(){
+        id = 0;
     }
 
     public Set<Team> getTeams() {
         return teams;
     }
 
-    public Team getTeamByName(String name) {
+    public Optional<Team> getTeamByName(String name) {
         if (name.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
 
         for (Team team : teams) {
             if (team.getName().equals(name)) {
-                return team;
+                return Optional.of(team);
             }
         }
 
-        return null;
+        return Optional.empty();
+    }
+
+    public Optional<Team> getTeam(String name) {
+        for (Team team : teams) {
+            if (team.getName().equals(name)) {
+                return Optional.of(team);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<Team> getTeam(int id) {
+        for (Team team : teams) {
+            if (team.getId() == id) {
+                return Optional.of(team);
+            }
+        }
+
+        return Optional.empty();
     }
 
     public Team addTeam(TeamDTO teamDto) {
-        if (getTeamByName(teamDto.name()) != null) {
+        Optional<Team> found = getTeam(teamDto.name());
+
+        if (found.isPresent()) {
             throw new RuntimeException("Team already exists");
         }
 
@@ -53,21 +82,9 @@ public class TeamService implements ITeamService {
         team.setId(id);
         teams.add(team);
 
+        System.out.println("Team added: " + team.getId() + " " + team.getName());
+
         return team;
-    }
-
-    public boolean removeTeam(String name) {
-        if (name.isEmpty()) {
-            return false;
-        }
-
-        Team team = getTeamByName(name);
-
-        if (null == team) {
-            return false;
-        }
-
-        return removeTeam(team.getId());
     }
 
     public boolean removeTeam(Integer id) {
@@ -94,17 +111,15 @@ public class TeamService implements ITeamService {
         }
     }
 
-    public boolean removePlayer(Team team, int id) {
-        Set<Player> players = team.getPlayers();
-
-        return players.removeIf(player -> {
-            if (player.getId() != id) {
+    public boolean removePlayer(int teamId, int playerId) {
+        return getTeam(teamId).map(value -> value.getPlayers().removeIf(player -> {
+            if (player.getId() != playerId) {
                 return false;
             }
 
             player.setTeam(null);
 
             return true;
-        });
+        })).orElse(false);
     }
 }
