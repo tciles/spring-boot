@@ -22,5 +22,7 @@ public interface ITeamService {
 
     void addPlayers(Team team, Set<Player> players);
 
+    boolean addPlayer(int teamId, Player player);
+
     boolean removePlayer(int teamId, int playerId);
 }

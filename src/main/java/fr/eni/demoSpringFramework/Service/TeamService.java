@@ -111,6 +111,18 @@ public class TeamService implements ITeamService {
         }
     }
 
+    public boolean addPlayer(int teamId, Player player) {
+        return getTeam(teamId).map(team -> {
+            if (team.hasPlayer(player)) {
+                return false;
+            }
+
+            team.addPlayer(player);
+
+            return true;
+        }).orElse(false);
+    }
+
     public boolean removePlayer(int teamId, int playerId) {
         return getTeam(teamId).map(value -> value.getPlayers().removeIf(player -> {
             if (player.getId() != playerId) {

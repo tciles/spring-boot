@@ -4,6 +4,7 @@ import fr.eni.demoSpringFramework.Do.Player;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -16,6 +17,17 @@ public class PlayerService implements IPlayerService {
         addPlayer(new Player("Thomas", "CILES", "thomas.ciles2025@campus-eni.fr"));
         addPlayer(new Player("John", "Doe", "john.doe@campus-eni.fr"));
         addPlayer(new Player("Jane", "Doe", "jane.doe@campus-eni.fr"));
+    }
+
+    @Override
+    public Optional<Player> getPlayer(int id) {
+        for (Player p : players) {
+            if (p.getId() == id) {
+                return Optional.of(p);
+            }
+        }
+
+        return Optional.empty();
     }
 
     public Set<Player> getPlayers() {

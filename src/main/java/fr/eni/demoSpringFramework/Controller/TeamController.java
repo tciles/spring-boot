@@ -1,12 +1,12 @@
 package fr.eni.demoSpringFramework.Controller;
 
+import fr.eni.demoSpringFramework.Do.Player;
 import fr.eni.demoSpringFramework.Do.Team;
 import fr.eni.demoSpringFramework.Dto.TeamDTO;
 import fr.eni.demoSpringFramework.Response.Payload;
 import fr.eni.demoSpringFramework.Service.IPlayerService;
 import fr.eni.demoSpringFramework.Service.ITeamService;
 import jakarta.validation.Valid;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.NumberUtils;
@@ -126,6 +126,29 @@ public class TeamController {
         return new ResponseEntity<>(Payload.create(team.get()), HttpStatus.OK);
     }
 
+    @PatchMapping("/{teamId}/players/{playerId}")
+    public ResponseEntity<Payload<Boolean>> addTeamPlayer(
+            @PathVariable("teamId") String teamIdParam,
+            @PathVariable("playerId") String playerIdParam
+    ) {
+        try {
+            int teamId = NumberUtils.parseNumber(teamIdParam, Integer.class);
+            int playerId = NumberUtils.parseNumber(playerIdParam, Integer.class);
+
+            Optional<Player> player = playerService.getPlayer(playerId);
+
+            if (player.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Payload.create(null, "Player Not Found"));
+            }
+
+            boolean isAdded = teamService.addPlayer(teamId, player.get());
+
+            return ResponseEntity.status(HttpStatus.OK).body(Payload.create(isAdded, "Player added"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Payload.create(null, "Team/Player <id> bad format"));
+        }
+    }
+
     @DeleteMapping("/{teamId}/players/{playerId}")
     public ResponseEntity<Payload<Boolean>> deleteTeamPlayer(
             @PathVariable("teamId") String teamIdParam,
@@ -139,7 +162,7 @@ public class TeamController {
 
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Payload.create(isRemoved));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Payload.create(null, "Team <id> bad format"));
+            return ResponseEntity.badRequest().body(Payload.create(null, "Team/Player <id> bad format"));
         }
     }
 }
