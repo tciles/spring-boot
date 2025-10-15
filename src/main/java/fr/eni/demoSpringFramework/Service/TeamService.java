@@ -30,24 +30,12 @@ public class TeamService implements ITeamService {
         id = 0;
     }
 
+    @Override
     public Set<Team> getTeams() {
         return teams;
     }
 
-    public Optional<Team> getTeamByName(String name) {
-        if (name.isEmpty()) {
-            return Optional.empty();
-        }
-
-        for (Team team : teams) {
-            if (team.getName().equals(name)) {
-                return Optional.of(team);
-            }
-        }
-
-        return Optional.empty();
-    }
-
+    @Override
     public Optional<Team> getTeam(String name) {
         for (Team team : teams) {
             if (team.getName().equals(name)) {
@@ -58,6 +46,7 @@ public class TeamService implements ITeamService {
         return Optional.empty();
     }
 
+    @Override
     public Optional<Team> getTeam(int id) {
         for (Team team : teams) {
             if (team.getId() == id) {
@@ -68,6 +57,7 @@ public class TeamService implements ITeamService {
         return Optional.empty();
     }
 
+    @Override
     public Team addTeam(TeamDTO teamDto) {
         Optional<Team> found = getTeam(teamDto.name());
 
@@ -87,6 +77,7 @@ public class TeamService implements ITeamService {
         return team;
     }
 
+    @Override
     public boolean removeTeam(Integer id) {
         return teams.removeIf(team -> {
             if (team.getId() != id) {
@@ -101,6 +92,7 @@ public class TeamService implements ITeamService {
         });
     }
 
+    @Override
     public void addPlayers(Team team, Set<Player> players) {
         for (Player player : players) {
             if (team.hasPlayer(player)) {
@@ -111,6 +103,7 @@ public class TeamService implements ITeamService {
         }
     }
 
+    @Override
     public boolean addPlayer(int teamId, Player player) {
         return getTeam(teamId).map(team -> {
             if (team.hasPlayer(player)) {
@@ -123,6 +116,7 @@ public class TeamService implements ITeamService {
         }).orElse(false);
     }
 
+    @Override
     public boolean removePlayer(int teamId, int playerId) {
         return getTeam(teamId).map(value -> value.getPlayers().removeIf(player -> {
             if (player.getId() != playerId) {

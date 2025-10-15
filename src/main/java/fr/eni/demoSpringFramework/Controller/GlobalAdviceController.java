@@ -10,6 +10,11 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @ControllerAdvice()
 public class GlobalAdviceController {
 
+    /**
+     * Handle Not Resource Found
+     *
+     * @return The Response.
+     */
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<?> handleNoResourceFoundException() {
         return ResponseEntity

@@ -32,6 +32,11 @@ public class TeamController {
         this.playerService = playerService;
     }
 
+    /**
+     * Get all teams
+     *
+     * @return The Response
+     */
     @GetMapping(path = {"", "/"})
     @ResponseBody
     public Payload<Set<Team>> getAll() {
@@ -42,6 +47,13 @@ public class TeamController {
         }
     }
 
+    /**
+     * Get a Team by his name
+     *
+     * @param name Team Name
+     *
+     * @return The Response
+     */
     @GetMapping("/{name}")
     public ResponseEntity<Payload<Team>> getOneByName(@PathVariable String name) {
         if (name.isBlank()) {
@@ -50,11 +62,19 @@ public class TeamController {
             );
         }
 
-        return teamService.getTeamByName(name)
+        return teamService.getTeam(name)
                 .map(team -> ResponseEntity.ok(Payload.create(team)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(Payload.create(null, "Team Not Found", HttpStatus.NOT_FOUND)));
     }
 
+    /**
+     * Create a Team
+     *
+     * @param teamDto Payload of type TeamDTO
+     * @param result Validation Result
+     *
+     * @return The Response
+     */
     @PostMapping
     public ResponseEntity<Payload<Team>> addOneTeam(
             @Valid @RequestBody TeamDTO teamDto,
@@ -88,6 +108,13 @@ public class TeamController {
         }
     }
 
+    /**
+     * Delete a Team
+     *
+     * @param id Team ID
+     *
+     * @return The Response
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Payload<Boolean>> deleteOneTeam(@PathVariable String id) {
         try {
@@ -113,19 +140,13 @@ public class TeamController {
         }
     }
 
-    @PatchMapping("/{name}/add-players")
-    public ResponseEntity<Payload<Team>> addTeamPlayer(@PathVariable String name, @RequestBody Set<String> emails) {
-        Optional<Team> team = teamService.getTeamByName(name);
-
-        if (team.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Payload.create(null, "Team Not Found"));
-        }
-
-        teamService.addPlayers(team.get(), playerService.getPlayersByEmail(emails));
-
-        return new ResponseEntity<>(Payload.create(team.get()), HttpStatus.OK);
-    }
-
+    /**
+     * Add a player to a team.
+     *
+     * @param teamIdParam Team ID
+     * @param playerIdParam Player ID
+     * @return The Response
+     */
     @PatchMapping("/{teamId}/players/{playerId}")
     public ResponseEntity<Payload<Boolean>> addTeamPlayer(
             @PathVariable("teamId") String teamIdParam,
@@ -149,6 +170,14 @@ public class TeamController {
         }
     }
 
+    /**
+     * Remove a player from a team.
+     *
+     * @param teamIdParam Team ID
+     * @param playerIdParam Player ID
+     *
+     * @return The Response
+     */
     @DeleteMapping("/{teamId}/players/{playerId}")
     public ResponseEntity<Payload<Boolean>> deleteTeamPlayer(
             @PathVariable("teamId") String teamIdParam,
@@ -164,5 +193,26 @@ public class TeamController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Payload.create(null, "Team/Player <id> bad format"));
         }
+    }
+
+    /**
+     * Add some Players to the Team.
+     *
+     * @param name Team name
+     * @param emails List of emails
+     *
+     * @return The Response.
+     */
+    @PatchMapping("/{name}/add-players")
+    public ResponseEntity<Payload<Team>> addPlayers(@PathVariable String name, @RequestBody Set<String> emails) {
+        Optional<Team> team = teamService.getTeam(name);
+
+        if (team.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Payload.create(null, "Team Not Found"));
+        }
+
+        teamService.addPlayers(team.get(), playerService.getPlayersByEmail(emails));
+
+        return new ResponseEntity<>(Payload.create(team.get()), HttpStatus.OK);
     }
 }

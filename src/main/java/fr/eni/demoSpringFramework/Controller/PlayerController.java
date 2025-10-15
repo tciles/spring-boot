@@ -1,7 +1,6 @@
 package fr.eni.demoSpringFramework.Controller;
 
 import fr.eni.demoSpringFramework.Do.Player;
-import fr.eni.demoSpringFramework.Do.Team;
 import fr.eni.demoSpringFramework.Response.Payload;
 import fr.eni.demoSpringFramework.Service.IPlayerService;
 import fr.eni.demoSpringFramework.Service.ITeamService;
@@ -27,6 +26,13 @@ public class PlayerController {
         this.teamService = teamService;
     }
 
+    /**
+     * Get All Players or One Player by his name.
+     *
+     * @param name Optional Player name
+     *
+     * @return The Response.
+     */
     @GetMapping(path = {"", "/"}, name = "app_players_by_team")
     public ResponseEntity<Payload<Set<Player>>> getPlayersByTeam(
             @RequestParam("team") Optional<String> name

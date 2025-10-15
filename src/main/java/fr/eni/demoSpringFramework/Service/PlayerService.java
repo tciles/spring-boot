@@ -19,6 +19,10 @@ public class PlayerService implements IPlayerService {
         addPlayer(new Player("Jane", "Doe", "jane.doe@campus-eni.fr"));
     }
 
+    public static void resetId(){
+        id = 0;
+    }
+
     @Override
     public Optional<Player> getPlayer(int id) {
         for (Player p : players) {
@@ -30,10 +34,12 @@ public class PlayerService implements IPlayerService {
         return Optional.empty();
     }
 
+    @Override
     public Set<Player> getPlayers() {
         return players;
     }
 
+    @Override
     public Player addPlayer(Player player) {
         if (getByEmail(player.getEmail()) != null) {
             throw new RuntimeException("Player already exists");
@@ -46,6 +52,7 @@ public class PlayerService implements IPlayerService {
         return player;
     }
 
+    @Override
     public Player getByEmail(String name) {
         for (Player player : players) {
             if (player.getEmail().equals(name)) {
