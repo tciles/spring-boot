@@ -82,4 +82,24 @@ public class PlayerController {
             return ResponseEntity.badRequest().body(Payload.create(null, "Error: Player can not be created", HttpStatus.BAD_REQUEST));
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Payload<Boolean>> deletePlayer(
+            @PathVariable("id") int id
+    ) {
+        try {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(Payload.create(
+                            playerService.removePlayer(id),
+                            "Player Deleted",
+                            HttpStatus.NO_CONTENT
+                    ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Payload.create(
+                    null,
+                    "Error: Player can not be deleted",
+                    HttpStatus.BAD_REQUEST
+            ));
+        }
+    }
 }

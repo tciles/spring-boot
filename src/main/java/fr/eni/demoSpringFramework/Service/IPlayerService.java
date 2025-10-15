@@ -55,4 +55,13 @@ public interface IPlayerService {
      * @return The new Player
      */
     Player addPlayer(PlayerDTO player);
+
+    /**
+     * Remove a Player
+     *
+     * @param id Player.id
+     *
+     * @return If the Player is already deleted
+     */
+    boolean removePlayer(int id);
 }

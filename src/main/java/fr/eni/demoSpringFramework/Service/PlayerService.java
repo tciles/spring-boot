@@ -103,4 +103,15 @@ public class PlayerService implements IPlayerService {
 
         return players;
     }
+
+    @Override
+    public boolean removePlayer(int id) {
+        Optional<Player> player = getPlayer(id);
+
+        if (player.isEmpty()) {
+            throw new RuntimeException("Player not found");
+        }
+
+        return players.removeIf(p -> p.getId() == id);
+    }
 }
