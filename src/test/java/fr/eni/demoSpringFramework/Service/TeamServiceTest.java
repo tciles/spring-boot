@@ -10,8 +10,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class TeamServiceTest {
@@ -22,8 +21,7 @@ public class TeamServiceTest {
         teams.add(new Team("U15F1"));
         teams.add(new Team("U15M1"));
 
-        ITeamService service = new TeamService(teams);
-        TeamService.resetId();
+        ITeamService service = getService(teams);
 
         assertEquals(2, service.getTeams().size());
     }
@@ -35,8 +33,7 @@ public class TeamServiceTest {
         teams.add(new Team("U15F1"));
         teams.add(new Team("U15M1"));
 
-        ITeamService service = new TeamService(teams);
-        TeamService.resetId();
+        ITeamService service = getService(teams);
 
         Optional<Team> expected = Optional.of(new Team("U15F1"));
 
@@ -50,13 +47,33 @@ public class TeamServiceTest {
     public void testAddTeam() {
         TeamDTO teamDto = new TeamDTO("__TEST__");
 
-        ITeamService service = new TeamService(new HashSet<>());
-        TeamService.resetId();
+        ITeamService service = getService(new HashSet<>());
 
         Team team = service.addTeam(teamDto);
         Team expected = new Team("__TEST__");
 
         assertEquals(expected, team);
         assertEquals(Optional.of(expected), service.getTeam("__TEST__"));
+    }
+
+    @Test
+    @DisplayName("Test delete one by id")
+    public void testDeleteTeamById() {
+        Set<Team> teams = new HashSet<>();
+        teams.add(new Team("U15F1"));
+        teams.add(new Team("U15M1"));
+
+        ITeamService service = getService(teams);
+
+        assertTrue(service.removeTeam(1));
+        assertFalse(service.removeTeam(1));
+        assertTrue(service.removeTeam(2));
+    }
+
+    private ITeamService getService(Set<Team> teams) {
+        ITeamService service = new TeamService(teams);
+        TeamService.resetId();
+
+        return service;
     }
 }
