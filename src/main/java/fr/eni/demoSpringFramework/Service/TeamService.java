@@ -32,29 +32,17 @@ public class TeamService implements ITeamService {
 
     @Override
     public Set<Team> getTeams() {
-        return teams;
+        return new HashSet<>(teams);
     }
 
     @Override
     public Optional<Team> getTeam(String name) {
-        for (Team team : teams) {
-            if (team.getName().equals(name)) {
-                return Optional.of(team);
-            }
-        }
-
-        return Optional.empty();
+        return teams.stream().filter(team -> team.getName().equals(name)).findFirst();
     }
 
     @Override
     public Optional<Team> getTeam(int id) {
-        for (Team team : teams) {
-            if (team.getId() == id) {
-                return Optional.of(team);
-            }
-        }
-
-        return Optional.empty();
+        return teams.stream().filter(team -> team.getId() == id).findFirst();
     }
 
     @Override

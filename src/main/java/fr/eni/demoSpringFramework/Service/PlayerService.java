@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class PlayerService implements IPlayerService {
@@ -28,19 +29,21 @@ public class PlayerService implements IPlayerService {
     }
 
     @Override
-    public Optional<Player> getPlayer(int id) {
-        for (Player p : players) {
-            if (p.getId() == id) {
-                return Optional.of(p);
-            }
-        }
-
-        return Optional.empty();
+    public Set<Player> getPlayers() {
+        return new HashSet<>(players);
     }
 
     @Override
-    public Set<Player> getPlayers() {
-        return players;
+    public Optional<Player> getPlayer(int id) {
+        return players.stream().filter(p -> p.getId() == id).findFirst();
+    }
+
+    @Override
+    public Optional<Player> getByFirstNameAndLastName(String firstName, String lastName) {
+        return players
+                .stream()
+                .filter(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName))
+                .findFirst();
     }
 
     @Override
@@ -62,46 +65,21 @@ public class PlayerService implements IPlayerService {
     }
 
     @Override
-    public Optional<Player> getByFirstNameAndLastName(String firstName, String lastName) {
-        for (Player p : players) {
-            if (p.getFirstName().equals(firstName) && p.getLastName().equals(lastName)) {
-                return Optional.of(p);
-            }
-        }
-
-        return Optional.empty();
-    }
-
-    @Override
     public Set<Player> getPlayersByEmail(Set<String> emails) {
-        Set<Player> players = new HashSet<>();
-
-        for (Player player : this.players) {
-            if (emails.contains(player.getEmail())) {
-                players.add(player);
-            }
-        }
-
-        return players;
+        return players.stream().filter(player -> emails.contains(player.getEmail())).collect(Collectors.toSet());
     }
 
     @Override
     public Set<Player> getPlayersByTeamName(String teamName) {
-        Set<Player> players = new HashSet<>();
-
-        for (Player player : this.players) {
+        return players.stream().filter(player -> {
             Team team = player.getTeam();
 
             if (team == null) {
-                continue;
+                return false;
             }
 
-            if (player.getTeam().getName().equals(teamName)) {
-                players.add(player);
-            }
-        }
-
-        return players;
+            return team.getName().equals(teamName);
+        }).collect(Collectors.toSet());
     }
 
     @Override
