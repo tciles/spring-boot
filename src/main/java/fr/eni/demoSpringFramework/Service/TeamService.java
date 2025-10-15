@@ -26,7 +26,7 @@ public class TeamService implements ITeamService {
         }
     }
 
-    public static void resetId(){
+    public static void resetId() {
         id = 0;
     }
 

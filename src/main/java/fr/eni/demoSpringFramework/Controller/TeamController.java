@@ -51,7 +51,6 @@ public class TeamController {
      * Get a Team by his name
      *
      * @param name Team Name
-     *
      * @return The Response
      */
     @GetMapping("/{name}")
@@ -71,8 +70,7 @@ public class TeamController {
      * Create a Team
      *
      * @param teamDto Payload of type TeamDTO
-     * @param result Validation Result
-     *
+     * @param result  Validation Result
      * @return The Response
      */
     @PostMapping
@@ -100,9 +98,9 @@ public class TeamController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     Payload.create(
-                        null,
-                        "Error: Team can not be created",
-                        HttpStatus.BAD_REQUEST
+                            null,
+                            "Error: Team can not be created",
+                            HttpStatus.BAD_REQUEST
                     )
             );
         }
@@ -112,7 +110,6 @@ public class TeamController {
      * Delete a Team
      *
      * @param id Team ID
-     *
      * @return The Response
      */
     @DeleteMapping("/{id}")
@@ -121,7 +118,7 @@ public class TeamController {
             int teamId = NumberUtils.parseNumber(id, Integer.class);
 
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Payload.create(teamService.removeTeam(teamId)));
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(
                     Payload.create(
                             null,
@@ -131,11 +128,11 @@ public class TeamController {
             );
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
-                 Payload.create(
-                      null,
-                      "Error: Team can not be deleted",
-                      HttpStatus.BAD_REQUEST
-                 )
+                    Payload.create(
+                            null,
+                            "Error: Team can not be deleted",
+                            HttpStatus.BAD_REQUEST
+                    )
             );
         }
     }
@@ -143,7 +140,7 @@ public class TeamController {
     /**
      * Add a player to a team.
      *
-     * @param teamIdParam Team ID
+     * @param teamIdParam   Team ID
      * @param playerIdParam Player ID
      * @return The Response
      */
@@ -173,9 +170,8 @@ public class TeamController {
     /**
      * Remove a player from a team.
      *
-     * @param teamIdParam Team ID
+     * @param teamIdParam   Team ID
      * @param playerIdParam Player ID
-     *
      * @return The Response
      */
     @DeleteMapping("/{teamId}/players/{playerId}")
@@ -198,9 +194,8 @@ public class TeamController {
     /**
      * Add some Players to the Team.
      *
-     * @param name Team name
+     * @param name   Team name
      * @param emails List of emails
-     *
      * @return The Response.
      */
     @PatchMapping("/{name}/add-players")

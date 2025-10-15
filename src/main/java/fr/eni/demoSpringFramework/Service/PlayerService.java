@@ -1,6 +1,8 @@
 package fr.eni.demoSpringFramework.Service;
 
 import fr.eni.demoSpringFramework.Do.Player;
+import fr.eni.demoSpringFramework.Dto.PlayerDTO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -14,12 +16,13 @@ public class PlayerService implements IPlayerService {
     private final Set<Player> players = new HashSet<>();
 
     PlayerService() {
-        addPlayer(new Player("Thomas", "CILES", "thomas.ciles2025@campus-eni.fr"));
-        addPlayer(new Player("John", "Doe", "john.doe@campus-eni.fr"));
-        addPlayer(new Player("Jane", "Doe", "jane.doe@campus-eni.fr"));
+        addPlayer(new PlayerDTO("Thomas", "CILES", "thomas.ciles2025@campus-eni.fr"));
+        addPlayer(new PlayerDTO("John", "Doe", "john.doe@campus-eni.fr"));
+        addPlayer(new PlayerDTO("Jane", "Doe", "jane.doe@campus-eni.fr"));
+        addPlayer(new PlayerDTO("Jane", "Doe2", null));
     }
 
-    public static void resetId(){
+    public static void resetId() {
         id = 0;
     }
 
@@ -40,27 +43,32 @@ public class PlayerService implements IPlayerService {
     }
 
     @Override
-    public Player addPlayer(Player player) {
-        if (getByEmail(player.getEmail()) != null) {
+    public Player addPlayer(PlayerDTO playerDto) {
+        Optional<Player> player = getByFirstNameAndLastName(playerDto.firstName(), playerDto.lastName());
+
+        if (player.isPresent()) {
             throw new RuntimeException("Player already exists");
         }
 
         id++;
-        player.setId(id);
-        players.add(player);
+        Player newPlayer = new Player();
+        BeanUtils.copyProperties(playerDto, newPlayer);
 
-        return player;
+        newPlayer.setId(id);
+        players.add(newPlayer);
+
+        return newPlayer;
     }
 
     @Override
-    public Player getByEmail(String name) {
-        for (Player player : players) {
-            if (player.getEmail().equals(name)) {
-                return player;
+    public Optional<Player> getByFirstNameAndLastName(String firstName, String lastName) {
+        for (Player p : players) {
+            if (p.getFirstName().equals(firstName) && p.getLastName().equals(lastName)) {
+                return Optional.of(p);
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 
     @Override
@@ -75,5 +83,4 @@ public class PlayerService implements IPlayerService {
 
         return players;
     }
-
 }

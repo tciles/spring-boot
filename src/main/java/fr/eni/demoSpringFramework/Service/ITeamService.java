@@ -19,7 +19,6 @@ public interface ITeamService {
      * Get Team By Name
      *
      * @param name Team Name
-     *
      * @return The Team
      */
     Optional<Team> getTeam(String name);
@@ -28,7 +27,6 @@ public interface ITeamService {
      * Get Team By ID
      *
      * @param id Team ID
-     *
      * @return The Team
      */
     Optional<Team> getTeam(int id);
@@ -37,7 +35,6 @@ public interface ITeamService {
      * Create a Team.
      *
      * @param teamDto Team Payload
-     *
      * @return The created team.
      */
     Team addTeam(TeamDTO teamDto);
@@ -46,7 +43,6 @@ public interface ITeamService {
      * Remove a team by his ID.
      *
      * @param id Team ID
-     *
      * @return If is deleted successfully
      */
     boolean removeTeam(Integer id);
@@ -54,7 +50,7 @@ public interface ITeamService {
     /**
      * A some multiple players.
      *
-     * @param team The Team
+     * @param team    The Team
      * @param players List Of Players
      */
     void addPlayers(Team team, Set<Player> players);
@@ -64,7 +60,6 @@ public interface ITeamService {
      *
      * @param teamId Team ID
      * @param player Player to add
-     *
      * @return If is added successfully
      */
     boolean addPlayer(int teamId, Player player);
@@ -72,9 +67,8 @@ public interface ITeamService {
     /**
      * Remove a Player to the Team.
      *
-     * @param teamId Team ID
+     * @param teamId   Team ID
      * @param playerId Player ID
-     *
      * @return If is removed successfully
      */
     boolean removePlayer(int teamId, int playerId);

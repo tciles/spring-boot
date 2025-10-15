@@ -27,6 +27,18 @@ public class Payload<T> {
         this.httpStatus = httpStatus;
     }
 
+    public static <T> Payload<T> create(T data) {
+        return new Payload<>(data);
+    }
+
+    public static <T> Payload<T> create(T data, String status) {
+        return new Payload<>(data, status);
+    }
+
+    public static <T> Payload<T> create(T data, String status, HttpStatus httpStatus) {
+        return new Payload<>(data, status, httpStatus);
+    }
+
     public T getData() {
         return data;
     }
@@ -43,17 +55,5 @@ public class Payload<T> {
     @JsonProperty("status")
     public int getHttpStatusCode() {
         return httpStatus.value();
-    }
-
-    public static <T> Payload<T> create(T data) {
-        return new Payload<>(data);
-    }
-
-    public static <T> Payload<T> create(T data, String status) {
-        return new Payload<>(data, status);
-    }
-
-    public static <T> Payload<T> create(T data, String status, HttpStatus httpStatus) {
-        return new Payload<>(data, status, httpStatus);
     }
 }
