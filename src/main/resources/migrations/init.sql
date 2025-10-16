@@ -10,7 +10,9 @@ CREATE TABLE PLAYER (
     firstname VARCHAR(30) NOT NULL CONSTRAINT ck_firstname CHECK(LEN(firstname) BETWEEN 2 AND 30),
     lastname VARCHAR(30) NOT NULL CONSTRAINT ck_lastname CHECK(LEN(lastname) BETWEEN 2 AND 30),
     email VARCHAR(255) NULL,
-    team_id INT NOT NULL CONSTRAINT FK_team FOREIGN KEY REFERENCES TEAM(id)
+    team_id INT NOT NULL CONSTRAINT FK_team FOREIGN KEY REFERENCES TEAM(id),
+
+    CONSTRAINT UN_firstname_lastname UNIQUE(firstname, lastname)
 );
 
 -- Insertion des équipes
