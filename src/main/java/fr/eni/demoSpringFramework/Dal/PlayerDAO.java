@@ -31,13 +31,7 @@ public class PlayerDAO implements IPlayerDAO {
     }
 
     public Optional<Player> findOneById(int id) {
-        String sql = """
-            SELECT p.id, p.firstname, p.lastname, p.email, p.team_id, t.name AS team_name
-            FROM PLAYER p
-            INNER JOIN TEAM t ON t.id = p.team_id
-            WHERE p.id = :id
-            ORDER BY p.id
-            """;
+        String sql = getSelectQueryPart("WHERE p.id = :id ORDER BY p.id");
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("id", id);
 
@@ -51,24 +45,13 @@ public class PlayerDAO implements IPlayerDAO {
     }
 
     public List<Player> findAll() {
-        String sql = """
-            SELECT p.id, p.firstname, p.lastname, p.email, p.team_id, t.name AS team_name
-            FROM PLAYER p
-            INNER JOIN TEAM t ON t.id = p.team_id
-            ORDER BY p.id
-            """;
+        String sql = getSelectQueryPart("ORDER BY p.id");
 
         return jdbcTemplate.query(sql, new PlayerRowMapper());
     }
 
     public List<Player> findAllByTeamName(String teamName) {
-        String sql = """
-            SELECT p.id, p.firstname, p.lastname, p.email, p.team_id, t.name AS team_name
-            FROM PLAYER p
-            INNER JOIN TEAM t ON t.id = p.team_id
-            WHERE t.name = :name
-            ORDER BY p.id
-            """;
+        String sql = getSelectQueryPart("WHERE t.name = :name ORDER BY p.id");
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("name", teamName);
 
@@ -146,12 +129,13 @@ public class PlayerDAO implements IPlayerDAO {
         return namedParameterJdbcTemplate.update(sql, sqlParameterSource) == 1;
     }
 
-    private String getBaseSelectQueryPart() {
+    private String getSelectQueryPart(String sqlPart) {
         return """
             SELECT p.id, p.firstname, p.lastname, p.email, p.team_id, t.name AS team_name
             FROM PLAYER p
             INNER JOIN TEAM t ON t.id = p.team_id
-            """;
+            %s
+            """.formatted(sqlPart);
     }
 
     static class PlayerRowMapper implements RowMapper<Player> {
