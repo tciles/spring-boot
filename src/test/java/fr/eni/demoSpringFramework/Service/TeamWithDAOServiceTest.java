@@ -18,8 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TeamWithDAOServiceTest {
 
     @Autowired
-    private TeamWithDAO service;
-
+    private TeamWithDAOService service;
 
     @Test
     @DisplayName("Test get all")

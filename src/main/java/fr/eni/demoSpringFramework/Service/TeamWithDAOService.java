@@ -13,11 +13,11 @@ import java.util.Set;
 
 @Service
 @Primary
-public class TeamWithDAO implements ITeamService {
+public class TeamWithDAOService implements ITeamService {
 
     private final ITeamDAO teamDAO;
 
-    public TeamWithDAO(ITeamDAO teamDAO) {
+    public TeamWithDAOService(ITeamDAO teamDAO) {
         this.teamDAO = teamDAO;
     }
 
