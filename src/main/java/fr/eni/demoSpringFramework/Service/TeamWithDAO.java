@@ -38,12 +38,20 @@ public class TeamWithDAO implements ITeamService {
 
     @Override
     public Team addTeam(TeamDTO teamDto) {
-        return null;
+        int insertedId = teamDAO.insertOne(teamDto);
+
+        Optional<Team> team = getTeam(insertedId);
+
+        if (team.isEmpty()) {
+            throw new RuntimeException("Team can not be created");
+        }
+
+        return team.get();
     }
 
     @Override
     public boolean removeTeam(Integer id) {
-        return false;
+        return teamDAO.deleteOne(id);
     }
 
     @Override

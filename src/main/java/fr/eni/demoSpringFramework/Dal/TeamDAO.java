@@ -1,16 +1,19 @@
 package fr.eni.demoSpringFramework.Dal;
 
 import fr.eni.demoSpringFramework.Do.Team;
+import fr.eni.demoSpringFramework.Dto.TeamDTO;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -27,7 +30,7 @@ public class TeamDAO implements ITeamDAO {
 
     @Override
     public List<Team> findAllTeams() {
-        return jdbcTemplate.query("SELECT id, name FROM TEAM", new TeamRowMapper());
+        return jdbcTemplate.query("SELECT id, name FROM TEAM ORDER BY id", new TeamRowMapper());
     }
 
     @Override
@@ -46,6 +49,34 @@ public class TeamDAO implements ITeamDAO {
         params.addValue("id", id);
 
         return findOneBy(sql, params);
+    }
+
+    @Override
+    public int insertOne(TeamDTO teamDTO) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("name", teamDTO.name());
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement pstmt = con.prepareStatement("INSERT INTO TEAM(name) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, teamDTO.name());
+            return pstmt;
+        }, keyHolder);
+
+        return Objects.requireNonNull(keyHolder.getKey()).intValue();
+    }
+
+    @Override
+    public boolean deleteOne(int id) {
+        String sql = "DELETE FROM TEAM WHERE id=?";
+
+        return jdbcTemplate.update(con -> {
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, id);
+
+            return pstmt;
+        }) == 1;
     }
 
     private Optional<Team> findOneBy(String sql, MapSqlParameterSource params) {
