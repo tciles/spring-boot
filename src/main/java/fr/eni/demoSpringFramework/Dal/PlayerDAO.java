@@ -2,6 +2,7 @@ package fr.eni.demoSpringFramework.Dal;
 
 import fr.eni.demoSpringFramework.Dal.Error.SqlException;
 import fr.eni.demoSpringFramework.Do.Player;
+import fr.eni.demoSpringFramework.Do.Team;
 import fr.eni.demoSpringFramework.Dto.PlayerDTO;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -123,7 +124,13 @@ public class PlayerDAO implements IPlayerDAO {
                 UPDATE PLAYER SET team_id = :team_id WHERE id = :id
                 """;
 
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("team_id", player.getTeamId())
+        Team team = player.getTeam();
+
+        if (null == team) {
+            throw new SqlException("Update Error");
+        }
+
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("team_id", team.getId())
                 .addValue("id", player.getId());
 
         return namedParameterJdbcTemplate.update(sql, sqlParameterSource) == 1;
@@ -146,8 +153,11 @@ public class PlayerDAO implements IPlayerDAO {
             player.setFirstName(rs.getString("firstname"));
             player.setLastName(rs.getString("lastname"));
             player.setEmail(rs.getString("email"));
-            player.setTeamId(rs.getInt("team_id"));
-            player.setTeamName(rs.getString("team_name"));
+
+            player.setTeam(new Team(
+                    rs.getInt("team_id"),
+                    rs.getString("team_name")
+            ));
 
             return player;
         }

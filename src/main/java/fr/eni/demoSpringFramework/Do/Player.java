@@ -11,17 +11,9 @@ public class Player {
 
     private String email;
 
-    private Integer teamId;
-
-    private String teamName;
+    private Team team;
 
     public Player() {
-    }
-
-    public Player(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
     }
 
     public int getId() {
@@ -56,20 +48,12 @@ public class Player {
         this.email = email;
     }
 
-    public void setTeamId(Integer teamId) {
-        this.teamId = teamId;
+    public Team getTeam() {
+        return team;
     }
 
-    public Integer getTeamId() {
-        return teamId;
-    }
-
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     @Override
