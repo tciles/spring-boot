@@ -51,7 +51,17 @@
             players.forEach(player => {
                 const $li = document.createElement("li");
                 $li.classList.add("list-group-item");
-                $li.innerText = `${player.first_name} ${player.last_name}`;
+                $li.classList.add("d-flex");
+                $li.classList.add("justify-content-between");
+                let html = `<span></spab><span>${player.first_name} ${player.last_name}</span>`;
+
+                if (player.email) {
+                    html += ` (<a href="mailto:${player.email}">${player.email}</a>)`;
+                }
+
+                html += `</span><button class="btn btn-sm btn-danger">Supprimer</button>`;
+
+                $li.innerHTML = html;
 
                 $list.appendChild($li);
             });
