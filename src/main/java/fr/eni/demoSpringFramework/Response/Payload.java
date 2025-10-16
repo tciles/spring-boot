@@ -31,12 +31,12 @@ public class Payload<T> {
         return new Payload<>(data);
     }
 
-    public static <T> Payload<T> create(T data, String status) {
-        return new Payload<>(data, status);
+    public static <T> Payload<T> create(T data, String message) {
+        return new Payload<>(data, message);
     }
 
-    public static <T> Payload<T> create(T data, String status, HttpStatus httpStatus) {
-        return new Payload<>(data, status, httpStatus);
+    public static <T> Payload<T> create(T data, String message, HttpStatus httpStatus) {
+        return new Payload<>(data, message, httpStatus);
     }
 
     public T getData() {
