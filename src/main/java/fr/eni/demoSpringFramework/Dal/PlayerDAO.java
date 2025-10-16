@@ -4,10 +4,10 @@ import fr.eni.demoSpringFramework.Dal.Error.SqlException;
 import fr.eni.demoSpringFramework.Do.Player;
 import fr.eni.demoSpringFramework.Do.Team;
 import fr.eni.demoSpringFramework.Dto.PlayerDTO;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -22,11 +22,11 @@ import java.util.Optional;
 @Repository
 public class PlayerDAO implements IPlayerDAO {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final JdbcOperations jdbcTemplate;
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final NamedParameterJdbcOperations namedParameterJdbcTemplate;
 
-    public PlayerDAO(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public PlayerDAO(JdbcOperations jdbcTemplate, NamedParameterJdbcOperations namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
