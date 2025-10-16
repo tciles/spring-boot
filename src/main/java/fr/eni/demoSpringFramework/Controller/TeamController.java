@@ -1,5 +1,6 @@
 package fr.eni.demoSpringFramework.Controller;
 
+import fr.eni.demoSpringFramework.Dal.Error.SqlException;
 import fr.eni.demoSpringFramework.Do.Player;
 import fr.eni.demoSpringFramework.Do.Team;
 import fr.eni.demoSpringFramework.Dto.TeamDTO;
@@ -74,7 +75,7 @@ public class TeamController {
      * @return The Response
      */
     @PostMapping
-    public ResponseEntity<Payload<Team>> addOneTeam(
+    public ResponseEntity<?> addOneTeam(
             @Valid @RequestBody TeamDTO teamDto,
             BindingResult result
     ) {
@@ -113,11 +114,17 @@ public class TeamController {
      * @return The Response
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Payload<Boolean>> deleteOneTeam(@PathVariable String id) {
+    public ResponseEntity<?> deleteOneTeam(@PathVariable String id) {
         try {
             int teamId = NumberUtils.parseNumber(id, Integer.class);
 
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Payload.create(teamService.removeTeam(teamId)));
+            boolean isDeleted = teamService.removeTeam(teamId);
+
+            if (!isDeleted) {
+                throw new SqlException("Team Not Deleted");
+            }
+
+            return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(
                     Payload.create(
@@ -189,25 +196,5 @@ public class TeamController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Payload.create(null, "Team/Player <id> bad format"));
         }
-    }
-
-    /**
-     * Add some Players to the Team.
-     *
-     * @param name   Team name
-     * @param emails List of emails
-     * @return The Response.
-     */
-    @PatchMapping("/{name}/add-players")
-    public ResponseEntity<Payload<Team>> addPlayers(@PathVariable String name, @RequestBody Set<String> emails) {
-        Optional<Team> team = teamService.getTeam(name);
-
-        if (team.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Payload.create(null, "Team Not Found"));
-        }
-
-        teamService.addPlayers(team.get(), playerService.getPlayersByEmail(emails));
-
-        return new ResponseEntity<>(Payload.create(team.get()), HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package fr.eni.demoSpringFramework.Dal;
 
+import fr.eni.demoSpringFramework.Dal.Error.SqlException;
 import fr.eni.demoSpringFramework.Do.Team;
 import fr.eni.demoSpringFramework.Dto.TeamDTO;
 
@@ -38,7 +39,7 @@ public interface ITeamDAO {
      *
      * @return Inserted ID
      */
-    int insertOne(TeamDTO teamDTO);
+    int insertOne(TeamDTO teamDTO) throws SqlException;
 
     /**
      * Delete Team

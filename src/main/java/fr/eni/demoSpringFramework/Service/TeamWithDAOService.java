@@ -1,5 +1,6 @@
 package fr.eni.demoSpringFramework.Service;
 
+import fr.eni.demoSpringFramework.Dal.Error.SqlException;
 import fr.eni.demoSpringFramework.Dal.ITeamDAO;
 import fr.eni.demoSpringFramework.Do.Player;
 import fr.eni.demoSpringFramework.Do.Team;
@@ -38,7 +39,13 @@ public class TeamWithDAOService implements ITeamService {
 
     @Override
     public Team addTeam(TeamDTO teamDto) {
-        int insertedId = teamDAO.insertOne(teamDto);
+        int insertedId;
+
+        try {
+            insertedId = teamDAO.insertOne(teamDto);
+        } catch (SqlException e) {
+            throw new RuntimeException("Insert Team Failed.", e);
+        }
 
         Optional<Team> team = getTeam(insertedId);
 

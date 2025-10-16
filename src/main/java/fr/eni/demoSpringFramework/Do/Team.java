@@ -1,21 +1,14 @@
 package fr.eni.demoSpringFramework.Do;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 public class Team {
 
     private int id;
+
     private String name;
-    private Set<Player> players;
 
-    {
-        players = new HashSet<>();
-    }
-
-    public Team() {
-    }
+    public Team() {}
 
     public Team(String name) {
         this.name = name;
@@ -37,27 +30,6 @@ public class Team {
         this.name = name;
     }
 
-    public Set<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(Set<Player> players) {
-        for (Player player : players) {
-            player.setTeam(this);
-        }
-
-        this.players = players;
-    }
-
-    public void addPlayer(Player player) {
-        player.setTeam(this);
-        players.add(player);
-    }
-
-    public void removePlayer(Player player) {
-        players.remove(player);
-    }
-
     @Override
     public boolean equals(Object obj) {
 
@@ -69,9 +41,5 @@ public class Team {
     @Override
     public int hashCode() {
         return Objects.hashCode(name);
-    }
-
-    public boolean hasPlayer(Player player) {
-        return players.contains(player);
     }
 }

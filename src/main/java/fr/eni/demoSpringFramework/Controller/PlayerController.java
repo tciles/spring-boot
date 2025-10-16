@@ -1,5 +1,6 @@
 package fr.eni.demoSpringFramework.Controller;
 
+import fr.eni.demoSpringFramework.Dal.Error.SqlException;
 import fr.eni.demoSpringFramework.Do.Player;
 import fr.eni.demoSpringFramework.Dto.PlayerDTO;
 import fr.eni.demoSpringFramework.Response.Payload;
@@ -39,17 +40,9 @@ public class PlayerController {
             return new ResponseEntity<>(Payload.create(playerService.getPlayers()), HttpStatus.OK);
         }
 
-        Payload<Set<Player>> payload1 = new Payload<>(playerService.getPlayersByTeamName(name.get()));
-
-        return ResponseEntity.status(payload1.getHttpStatus()).body(payload1);
-
-        /*
-        Payload<Set<Player>> payload = teamService.getTeam(name.get())
-                .map(value -> Payload.create(value.getPlayers(), "Players for the team " + value.getName(), HttpStatus.OK))
-                .orElseGet(() -> Payload.create(null, "Team " + name.get() + " Not Found", HttpStatus.NOT_FOUND));
+        Payload<Set<Player>> payload = new Payload<>(playerService.getPlayersByTeamName(name.get()));
 
         return ResponseEntity.status(payload.getHttpStatus()).body(payload);
-        */
     }
 
     /**
@@ -84,16 +77,17 @@ public class PlayerController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Payload<Boolean>> deletePlayer(
+    public ResponseEntity<?> deletePlayer(
             @PathVariable("id") int id
     ) {
         try {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(Payload.create(
-                            playerService.removePlayer(id),
-                            "Player Deleted",
-                            HttpStatus.NO_CONTENT
-                    ));
+            boolean isDeleted = playerService.removePlayer(id);
+
+            if (!isDeleted) {
+                throw new SqlException("");
+            }
+
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Payload.create(
                     null,

@@ -2,6 +2,7 @@ package fr.eni.demoSpringFramework.Dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record PlayerDTO(
@@ -14,6 +15,9 @@ public record PlayerDTO(
         String lastName,
 
         @Email
-        String email
+        String email,
+
+        @NotNull
+        Integer teamId
 ) {
 }

@@ -1,5 +1,6 @@
 package fr.eni.demoSpringFramework.Dal;
 
+import fr.eni.demoSpringFramework.Dal.Error.SqlException;
 import fr.eni.demoSpringFramework.Do.Team;
 import fr.eni.demoSpringFramework.Dto.TeamDTO;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -7,13 +8,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -52,19 +53,20 @@ public class TeamDAO implements ITeamDAO {
     }
 
     @Override
-    public int insertOne(TeamDTO teamDTO) {
+    public int insertOne(TeamDTO teamDTO) throws SqlException {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("name", teamDTO.name());
+        SqlParameterSource params = (new MapSqlParameterSource()).addValue("name", teamDTO.name());
 
-        jdbcTemplate.update(con -> {
-            PreparedStatement pstmt = con.prepareStatement("INSERT INTO TEAM(name) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, teamDTO.name());
-            return pstmt;
-        }, keyHolder);
+        namedParameterJdbcTemplate.update("INSERT INTO TEAM (name) VALUES (:name)", params, keyHolder);
 
-        return Objects.requireNonNull(keyHolder.getKey()).intValue();
+        Number key = keyHolder.getKey();
+
+        if (key != null) {
+            return key.intValue();
+        }
+
+        throw new SqlException("Insert Error");
     }
 
     @Override

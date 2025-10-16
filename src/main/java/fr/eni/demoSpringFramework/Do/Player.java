@@ -1,8 +1,5 @@
 package fr.eni.demoSpringFramework.Do;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Objects;
 
 public class Player {
@@ -14,7 +11,9 @@ public class Player {
 
     private String email;
 
-    private Team team;
+    private Integer teamId;
+
+    private String teamName;
 
     public Player() {
     }
@@ -57,22 +56,20 @@ public class Player {
         this.email = email;
     }
 
-    @JsonIgnore
-    public Team getTeam() {
-        return team;
+    public void setTeamId(Integer teamId) {
+        this.teamId = teamId;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
-    @JsonProperty("team")
     public Integer getTeamId() {
-        if (null == team) {
-            return null;
-        }
+        return teamId;
+    }
 
-        return team.getId();
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 
     @Override

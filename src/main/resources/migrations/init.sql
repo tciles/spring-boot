@@ -10,7 +10,7 @@ CREATE TABLE PLAYER (
     firstname VARCHAR(30) NOT NULL CONSTRAINT ck_firstname CHECK(LEN(firstname) BETWEEN 2 AND 30),
     lastname VARCHAR(30) NOT NULL CONSTRAINT ck_lastname CHECK(LEN(lastname) BETWEEN 2 AND 30),
     email VARCHAR(255) NULL,
-    id_team INT NOT NULL CONSTRAINT FK_team FOREIGN KEY REFERENCES TEAM(id)
+    team_id INT NOT NULL CONSTRAINT FK_team FOREIGN KEY REFERENCES TEAM(id)
 );
 
 -- Insertion des équipes
@@ -21,7 +21,7 @@ INSERT INTO TEAM(name) VALUES
     ('U18M1');
 
 -- Insertion des joueurs pour U15F1
-INSERT INTO PLAYER(firstname, lastname, email, id_team) VALUES
+INSERT INTO PLAYER(firstname, lastname, email, team_id) VALUES
     ('Emma', 'Lemoine', 'emma.lemoine@example.com', 1),
     ('Chloé', 'Durand', 'chloe.durand@example.com', 1),
     ('Zoé', 'Pires', 'zoe.pires@example.com', 1),
@@ -32,7 +32,7 @@ INSERT INTO PLAYER(firstname, lastname, email, id_team) VALUES
     ('Lucie', 'Caron', 'lucie.caron@example.com', 1);
 
 -- Insertion des joueurs pour U15M1
-INSERT INTO PLAYER(firstname, lastname, email, id_team) VALUES
+INSERT INTO PLAYER(firstname, lastname, email, team_id) VALUES
     ('Léo', 'Roche', 'leo.roche@example.com', 2),
     ('Maxime', 'Lemoine', 'maxime.lemoine@example.com', 2),
     ('Julien', 'David', 'julien.david@example.com', 2),
@@ -45,7 +45,7 @@ INSERT INTO PLAYER(firstname, lastname, email, id_team) VALUES
     ('Paul', 'Joly', 'paul.joly@example.com', 2);
 
 -- Insertion des joueurs pour U18F1
-INSERT INTO PLAYER(firstname, lastname, email, id_team) VALUES
+INSERT INTO PLAYER(firstname, lastname, email, team_id) VALUES
     ('Marie', 'Tanguy', 'marie.tanguy@example.com', 3),
     ('Sophie', 'Chevalier', 'sophie.chevalier@example.com', 3),
     ('Léa', 'Martin', 'lea.martin@example.com', 3),
@@ -59,7 +59,7 @@ INSERT INTO PLAYER(firstname, lastname, email, id_team) VALUES
     ('Alice', 'Lemoine', 'alice.lemoine@example.com', 3);
 
 -- Insertion des joueurs pour U18M1
-INSERT INTO PLAYER(firstname, lastname, email, id_team) VALUES
+INSERT INTO PLAYER(firstname, lastname, email, team_id) VALUES
     ('Marc', 'Fournier', 'marc.fournier@example.com', 4),
     ('Bastien', 'David', 'bastien.david@example.com', 4),
     ('Vincent', 'Trudeau', 'vincent.trudeau@example.com', 4),
