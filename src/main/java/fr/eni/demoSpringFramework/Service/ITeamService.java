@@ -48,14 +48,6 @@ public interface ITeamService {
     boolean removeTeam(Integer id);
 
     /**
-     * A some multiple players.
-     *
-     * @param team    The Team
-     * @param players List Of Players
-     */
-    void addPlayers(Team team, Set<Player> players);
-
-    /**
      * Add a Player to the Team.
      *
      * @param teamId Team ID

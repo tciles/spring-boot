@@ -62,11 +62,6 @@ public class TeamWithDAOService implements ITeamService {
     }
 
     @Override
-    public void addPlayers(Team team, Set<Player> players) {
-
-    }
-
-    @Override
     public boolean addPlayer(int teamId, Player player) {
         return false;
     }
