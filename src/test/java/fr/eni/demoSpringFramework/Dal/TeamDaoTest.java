@@ -9,7 +9,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@SpringBootTest
+@SpringBootTest(properties = {
+        "dbname=spring_boot_test"
+})
 public class TeamDaoTest {
 
     @Autowired
