@@ -14,23 +14,23 @@
         <h1>Basket Club</h1>
     </div>
 
-   <div class="row">
-       <div class="col-6">
-           <div class="d-flex justify-content-between mb-4">
-               <h5>Équipe</h5>
-               <button class="btn btn-sm btn-primary" id="new_team">Nouvelle équipe</button>
-           </div>
-           <ul id="team_list" class="list-unstyled list-group"></ul>
-       </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="d-flex justify-content-between mb-4">
+                <h5>Équipe</h5>
+                <button class="btn btn-sm btn-primary" id="new_team">Nouvelle équipe</button>
+            </div>
+            <ul id="team_list" class="list-unstyled list-group"></ul>
+        </div>
 
-       <div class="col-6 d-none" id="players_block">
-           <div class="d-flex justify-content-between mb-4">
-               <h5>Joueurs</h5>
-               <button class="btn btn-sm btn-primary">Nouveau joueur</button>
-           </div>
-           <ul id="players_list" class="list-unstyled list-group"></ul>
-       </div>
-   </div>
+        <div class="col-6 d-none" id="players_block">
+            <div class="d-flex justify-content-between mb-4">
+                <h5>Joueurs</h5>
+                <button class="btn btn-sm btn-primary">Nouveau joueur</button>
+            </div>
+            <ul id="players_list" class="list-unstyled list-group"></ul>
+        </div>
+    </div>
 </div>
 
 <script type="module">
@@ -40,16 +40,32 @@
     const loadTeams = () => fetch("api/teams").then(toJson).then(getData);
     const loadPlayers = (teamName) => fetch(`api/players?team=${teamName}`).then(toJson).then(getData);
 
-
     const createTeam = (name) => {
         fetch("api/teams", {
             method: "POST",
             headers: {
                 "content-type": "application/json"
             },
-            body: JSON.stringify({ name })
+            body: JSON.stringify({name})
         }).then(toJson).then(getData).then(response => {
             init();
+        });
+    }
+
+    const createPlayer = (team, firstname, lastname, email) => {
+        fetch("api/players", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                team_id: team.id,
+                first_name: firstname,
+                last_name: lastname,
+                email
+            })
+        }).then(toJson).then(getData).then(response => {
+            loadPlayers(team.name)
         });
     }
 
