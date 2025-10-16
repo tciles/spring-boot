@@ -58,7 +58,12 @@ public class TeamDAO implements ITeamDAO {
 
         SqlParameterSource params = (new MapSqlParameterSource()).addValue("name", teamDTO.name());
 
-        namedParameterJdbcTemplate.update("INSERT INTO TEAM (name) VALUES (:name)", params, keyHolder);
+        namedParameterJdbcTemplate.update(
+                "INSERT INTO TEAM (name) VALUES (:name)",
+                params,
+                keyHolder,
+                new String[]{"id"}
+        );
 
         Number key = keyHolder.getKey();
 

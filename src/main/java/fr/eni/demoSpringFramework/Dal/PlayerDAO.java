@@ -95,7 +95,7 @@ public class PlayerDAO implements IPlayerDAO {
             VALUES (:firstname, :lastname, :email, :team_id)
             """;
 
-        namedParameterJdbcTemplate.update(sql, params, keyHolder);
+        namedParameterJdbcTemplate.update(sql, params, keyHolder, new String[]{"id"});
 
         Number key = keyHolder.getKey();
 
