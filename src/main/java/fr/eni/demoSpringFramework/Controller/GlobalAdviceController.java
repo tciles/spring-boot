@@ -31,7 +31,7 @@ public class GlobalAdviceController {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<?> handleHttpRequestMethodNotSupportedException() {
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(Payload.create(null, "Bad Request", HttpStatus.BAD_REQUEST));
+                .status(HttpStatus.METHOD_NOT_ALLOWED)
+                .body(Payload.create(null, "Bad Request", HttpStatus.METHOD_NOT_ALLOWED));
     }
 }
