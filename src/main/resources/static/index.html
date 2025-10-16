@@ -18,7 +18,7 @@
        <div class="col-6">
            <div class="d-flex justify-content-between mb-4">
                <h5>Équipe</h5>
-               <button class="btn btn-sm btn-primary">Nouvelle équipe</button>
+               <button class="btn btn-sm btn-primary" id="new_team">Nouvelle équipe</button>
            </div>
            <ul id="team_list" class="list-unstyled list-group"></ul>
        </div>
@@ -39,6 +39,25 @@
 
     const loadTeams = () => fetch("api/teams").then(toJson).then(getData);
     const loadPlayers = (teamName) => fetch(`api/players?team=${teamName}`).then(toJson).then(getData);
+
+
+    const createTeam = (name) => {
+        fetch("api/teams", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({ name })
+        }).then(toJson).then(getData).then(response => {
+            init();
+        });
+    }
+
+    document.getElementById("new_team").addEventListener("click", () => {
+        const name = prompt("Nom de l'équipe")
+
+        createTeam(name);
+    });
 
     const removeActiveClass = ($list) => {
         $list.querySelectorAll("li.active").forEach($item => {
@@ -73,26 +92,31 @@
         });
     }
 
-    loadTeams().then(teams => {
-        const $list = document.getElementById("team_list");
+    const init = () => {
+        loadTeams().then(teams => {
+            const $list = document.getElementById("team_list");
+            $list.innerHTML = "";
 
-        teams.forEach(team => {
-            const $li = document.createElement("li");
-            $li.classList.add("list-group-item");
-            $li.classList.remove("active");
-            $li.innerText = team.name;
-            $li.dataset.id = team.id;
+            teams.forEach(team => {
+                const $li = document.createElement("li");
+                $li.classList.add("list-group-item");
+                $li.classList.remove("active");
+                $li.innerText = team.name;
+                $li.dataset.id = team.id;
 
-            $list.appendChild($li);
+                $list.appendChild($li);
 
-            $li.addEventListener("click", (e) => {
-                removeActiveClass($list);
+                $li.addEventListener("click", (e) => {
+                    removeActiveClass($list);
 
-                e.target.classList.add("active");
-                showPlayers(e.target.innerText);
-            })
+                    e.target.classList.add("active");
+                    showPlayers(e.target.innerText);
+                })
+            });
         });
-    });
+    }
+
+    init();
 </script>
 
 </body>

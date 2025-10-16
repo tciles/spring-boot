@@ -31,7 +31,7 @@ public class TeamDAO implements ITeamDAO {
 
     @Override
     public List<Team> findAllTeams() {
-        return jdbcTemplate.query("SELECT id, name FROM TEAM ORDER BY id", new TeamRowMapper());
+        return jdbcTemplate.query("SELECT id, name FROM TEAM ORDER BY name", new TeamRowMapper());
     }
 
     @Override
