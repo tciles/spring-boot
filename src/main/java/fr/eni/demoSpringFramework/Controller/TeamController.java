@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/teams")
 public class TeamController {
@@ -46,6 +47,25 @@ public class TeamController {
         } catch (Exception e) {
             return Payload.create(new HashSet<>());
         }
+    }
+
+    /**
+     * Get a Team by his id
+     *
+     * @param id Team id
+     * @return The Response
+     */
+    @GetMapping("/{id}/view")
+    public ResponseEntity<Payload<Team>> getOneById(@PathVariable String id) {
+        if (id.isBlank()) {
+            return ResponseEntity.badRequest().body(
+                    Payload.create(null, "Bad parameter <id>")
+            );
+        }
+
+        return teamService.getTeam(Integer.parseInt(id))
+                .map(team -> ResponseEntity.ok(Payload.create(team)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(Payload.create(null, "Team Not Found", HttpStatus.NOT_FOUND)));
     }
 
     /**
