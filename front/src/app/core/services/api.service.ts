@@ -1,6 +1,7 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
+import {BASE_API_URL_TOKEN} from '../../app.config';
 
 type Payload<T> = {
   data: T,
@@ -36,38 +37,36 @@ const sortById = <T extends {id: number}>(a: T, b: T) => {
 })
 export class ApiService {
 
-  private static BASE_URL = "http://localhost:8080/api"
-
-  public constructor(private httpClient: HttpClient) {
-  }
+  private httpClient = inject(HttpClient);
+  private baseApiUrl = inject(BASE_API_URL_TOKEN)
 
   public getTeam(): Observable<Team[]> {
     return this.httpClient
-      .get<Payload<Team[]>>(`${ApiService.BASE_URL}/teams/`)
+      .get<Payload<Team[]>>(`${this.baseApiUrl}/teams/`)
       .pipe(map((payload) => payload.data.sort(sortById)));
   }
 
   public getTeamById(id: number): Observable<Team> {
     return this.httpClient
-      .get<Payload<Team>>(`${ApiService.BASE_URL}/teams/${id}/view`)
+      .get<Payload<Team>>(`${this.baseApiUrl}/teams/${id}/view`)
       .pipe(map((payload) => payload.data));
   }
 
   createTeam(name: string) {
     return this.httpClient
-      .post<Payload<Team>>(`${ApiService.BASE_URL}/teams`, { name })
+      .post<Payload<Team>>(`${this.baseApiUrl}/teams`, { name })
       .pipe(map((payload) => payload.data));
   }
 
   deleteTeam(id: number) {
     return this.httpClient
-      .delete<Payload<null>>(`${ApiService.BASE_URL}/teams/${id}`)
+      .delete<Payload<null>>(`${this.baseApiUrl}/teams/${id}`)
       .pipe(map(() => null));
   }
 
   getPlayersByTeamName(name: string) {
     return this.httpClient
-      .get<Payload<PlayerApi[]>>(`${ApiService.BASE_URL}/players?team=${name}`)
+      .get<Payload<PlayerApi[]>>(`${this.baseApiUrl}/players?team=${name}`)
       .pipe(map((payload): Player[] => payload.data.sort(sortById).map(item => {
         return {
           id: item.id,
@@ -80,7 +79,7 @@ export class ApiService {
 
   createPlayer(firstname: string, lastname: string, email: string|null, teamId: number) {
     return this.httpClient
-      .post<Payload<Player>>(`${ApiService.BASE_URL}/players`, {
+      .post<Payload<Player>>(`${this.baseApiUrl}/players`, {
         first_name: firstname,
         last_name: lastname,
         email,
@@ -91,7 +90,7 @@ export class ApiService {
 
   deletePlayer(id: number) {
     return this.httpClient
-      .delete<Payload<null>>(`${ApiService.BASE_URL}/players/${id}`)
+      .delete<Payload<null>>(`${this.baseApiUrl}/players/${id}`)
       .pipe(map(() => null));
   }
 }
