@@ -9,5 +9,8 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn) 
   const newReq = req.clone({
     headers: req.headers.append('Authorization', authToken),
   });
+
+
+  console.log(newReq.method);
   return next(newReq);
 }

@@ -15,9 +15,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@CrossOrigin(value = {
-        "http://localhost:4200"
-})
 @RestController
 @RequestMapping("/api/players")
 public class PlayerController {
