@@ -78,12 +78,13 @@ export class ApiService {
       })));
   }
 
-  createPlayer(firstname: string, lastname: string, email: string|null) {
+  createPlayer(firstname: string, lastname: string, email: string|null, teamId: number) {
     return this.httpClient
       .post<Payload<Player>>(`${ApiService.BASE_URL}/players`, {
         first_name: firstname,
         last_name: lastname,
-        email
+        email,
+        team_id: teamId
       })
       .pipe(map((payload) => payload.data));
   }
